@@ -6,7 +6,7 @@ import Welcome from "./components/Welcome.jsx";
 import MessageList from "./components/MessageList.jsx";
 import InputBar from "./components/InputBar.jsx";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE = "https://arsalan-ai.onrender.com" || "http://localhost:8000";
 let messageId = 0;
 
 function makeMsg(role, kind, payload = null) {
