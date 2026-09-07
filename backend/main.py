@@ -218,7 +218,7 @@ def classify_link(url: str) -> str:
   hostname = (urlparse(url).hostname or "").lower().removeprefix("www.")
   known_domains = {
     "github.com": "github",
-t    "linkedin.com": "linkedin",
+    "linkedin.com": "linkedin",
     "leetcode.com": "leetcode",
     "codeforces.com": "codeforces",
   }
