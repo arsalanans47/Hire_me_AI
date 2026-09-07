@@ -41,6 +41,7 @@ export default function App() {
   }
 
   async function streamChat(question, mode = "chat") {
+    let assistantId = null;
     setIsTyping(true);
 
     try {
@@ -55,7 +56,6 @@ export default function App() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let answer = "";
-      let assistantId = null;
 
       while (true) {
         const { value, done } = await reader.read();

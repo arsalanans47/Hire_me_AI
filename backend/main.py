@@ -28,7 +28,7 @@ app.add_middleware(
   allow_origins=[
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://arsalanai.vercel.app/"
+    "https://arsalanai.vercel.app"
   ],
   allow_credentials=True,
   allow_methods=["*"],
@@ -218,7 +218,7 @@ def classify_link(url: str) -> str:
   hostname = (urlparse(url).hostname or "").lower().removeprefix("www.")
   known_domains = {
     "github.com": "github",
-    "linkedin.com": "linkedin",
+t    "linkedin.com": "linkedin",
     "leetcode.com": "leetcode",
     "codeforces.com": "codeforces",
   }
