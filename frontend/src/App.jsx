@@ -158,7 +158,8 @@ export default function App() {
       setAwaitingJD(false);
       setActiveMode(null);
     } else {
-      const asksForProjects = /\b(project|projects|built|portfolio|work history)\b/i.test(text);
+      const asksForProjectDetails = /\b(detail|details|describe|description|technolog|tech stack|purpose|feature|how does|explain)\b/i.test(text);
+      const asksForProjects = /\b(project|projects|built|portfolio|work history)\b/i.test(text) && !asksForProjectDetails;
       const asksAbout = /\b(tell me about|who is|about)\b.*\barsalan\b/i.test(text);
       if (asksForProjects) {
         showProjects();

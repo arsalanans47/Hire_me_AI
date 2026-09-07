@@ -177,6 +177,10 @@ def parse_resume(resume_text):
     - if a list has no information, return an empty list
     - include internship inside experiences.
     - Extract skills mentioned across the entire resume
+    - Preserve every project name and the description, technologies, purpose, features, and
+      URLs stated near that project. Do not reduce a project to its name when the resume contains
+      more information.
+    - Store each project as a single string in the form "Project name: complete supported details".
     - return an empty links list; hyperlinks are extracted separately from PDF annotations
     
     """
