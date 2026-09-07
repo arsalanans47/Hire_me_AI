@@ -158,8 +158,11 @@ export default function App() {
       setAwaitingJD(false);
       setActiveMode(null);
     } else {
-      const asksForProjectDetails = /\b(detail|details|describe|description|technolog|tech stack|purpose|feature|how does|explain)\b/i.test(text);
-      const asksForProjects = /\b(project|projects|built|portfolio|work history)\b/i.test(text) && !asksForProjectDetails;
+      const normalizedText = text.toLowerCase().replace(/[?!.,]/g, "").trim();
+      const asksForProjectDetails = /\b(detail|details|describe|description|technolog|tech stack|purpose|feature|how does|explain|tell me about)\b/i.test(normalizedText);
+      const asksForProjectComparison = /\b(best|strongest|most impressive|favorite|compare|comparison|recommend|recommendation|better|suitable|fit|which is)\b/i.test(normalizedText);
+      const asksForProjectList = /^(what projects|which projects|what have you built|show (me )?(the )?projects|list (all )?(the )?projects|what is in the portfolio|show (me )?the portfolio)\b/i.test(normalizedText);
+      const asksForProjects = asksForProjectList && !asksForProjectDetails && !asksForProjectComparison;
       const asksAbout = /\b(tell me about|who is|about)\b.*\barsalan\b/i.test(text);
       if (asksForProjects) {
         showProjects();
