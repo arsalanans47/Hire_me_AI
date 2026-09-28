@@ -185,13 +185,20 @@ def home():
     return {
         "message" : "Ye home page hai"
     }
+
+
+@app.get("/resume", response_model=Resume)
+def get_resume():
+    return parse_resume(read_pdf(RESUME_PATH))
+
+
 # chatgpt.cpom
 #chatgot.com/aceeddferre5e
 
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    resume_text=read_pdf(Path("resume_arsalan_25.pdf"))
+    resume_text=read_pdf(RESUME_PATH)
     resume=parse_resume(resume_text)
     answer=ask_candidate(request.question, resume)
     return {
