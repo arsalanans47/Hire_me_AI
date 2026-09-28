@@ -52,29 +52,12 @@ export default function App() {
         body: JSON.stringify({ question, mode }),
       });
 
-      if (!response.ok || !response.body) throw new Error("Chat request failed");
+      if (!response.ok) throw new Error("Chat request failed");
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let answer = "";
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        if (!chunk) continue;
-
-        answer += chunk;
-        if (!assistantId) {
-          assistantId = `m${++messageId}`;
-          setIsTyping(false);
-          setMessages((messages) => [...messages, { id: assistantId, role: "assistant", kind: "text", payload: answer }]);
-        } else {
-          setMessages((messages) =>
-            messages.map((message) => (message.id === assistantId ? { ...message, payload: answer } : message))
-          );
-        }
-      }
+      const data = await response.json();
+      assistantId = `m${++messageId}`;
+      setIsTyping(false);
+      setMessages((messages) => [...messages, { id: assistantId, role: "assistant", kind: "text", payload: data.answer }]);
     } catch (error) {
       setMessages((messages) => messages.filter((message) => message.id !== assistantId));
       throw error;

@@ -1,9 +1,10 @@
 import json
 import os
+from functools import lru_cache
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from groq import Groq
@@ -178,6 +179,11 @@ def read_pdf(file_path: Path):
 
     return text
 
+
+@lru_cache(maxsize=1)
+def load_resume():
+    return parse_resume(read_pdf(RESUME_PATH))
+
 @app.get("/")
 def home():
     # resume_text=read_pdf(Path("my_resume.pdf"))
@@ -189,7 +195,10 @@ def home():
 
 @app.get("/resume", response_model=Resume)
 def get_resume():
-    return parse_resume(read_pdf(RESUME_PATH))
+    try:
+        return load_resume()
+    except Exception as error:
+        raise HTTPException(status_code=502, detail="Unable to load the resume") from error
 
 
 # chatgpt.cpom
@@ -198,12 +207,11 @@ def get_resume():
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    resume_text=read_pdf(RESUME_PATH)
-    resume=parse_resume(resume_text)
-    answer=ask_candidate(request.question, resume)
-    return {
-        "answer": answer
-    }
+    try:
+        answer = ask_candidate(request.question, load_resume())
+        return {"answer": answer}
+    except Exception as error:
+        raise HTTPException(status_code=502, detail="Unable to generate a response") from error
 
 
 
